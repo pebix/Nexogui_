@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 31-07-2026 a las 22:41:14
+-- Tiempo de generación: 07-10-2026 a las 22:32:31
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -38,6 +38,33 @@ CREATE TABLE `password_resets` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `reportes`
+--
+
+CREATE TABLE `reportes` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `usuario_id` int(10) UNSIGNED NOT NULL,
+  `categoria` varchar(50) NOT NULL,
+  `ubicacion` varchar(255) NOT NULL,
+  `latitud` decimal(10,8) DEFAULT NULL,
+  `longitud` decimal(11,8) DEFAULT NULL,
+  `descripcion` text NOT NULL,
+  `foto` varchar(255) DEFAULT NULL,
+  `estado` enum('pendiente','en_proceso','resuelto') DEFAULT 'pendiente',
+  `fecha_creacion` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `reportes`
+--
+
+INSERT INTO `reportes` (`id`, `usuario_id`, `categoria`, `ubicacion`, `latitud`, `longitud`, `descripcion`, `foto`, `estado`, `fecha_creacion`) VALUES
+(3, 6, 'Alumbrado', 'Lat: -32.3560, Lng: -57.1971', -32.35596815, -57.19707546, 'dseajeh3', 'uploads/reportes/reporte_6a99be6960c565.84848723.png', 'pendiente', '2026-09-03 15:37:29'),
+(4, 6, 'Agua', 'Lat: -32.3568, Lng: -57.2058', -32.35676570, -57.20582939, 'qsy', 'uploads/reportes/reporte_6a9af8104d45b5.04136957.png', 'pendiente', '2026-09-04 13:55:44');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `user_tokens`
 --
 
@@ -62,6 +89,10 @@ CREATE TABLE `usuarios` (
   `email` varchar(100) NOT NULL,
   `password_hash` varchar(255) DEFAULT NULL COMMENT 'Null si se registra exclusivamente con red social',
   `telefono` varchar(20) DEFAULT NULL,
+  `direccion` varchar(255) DEFAULT NULL,
+  `biografia` text DEFAULT NULL,
+  `avatar` varchar(255) DEFAULT NULL,
+  `idioma` varchar(5) DEFAULT 'es',
   `auth_provider` enum('local','google','facebook') DEFAULT 'local',
   `provider_id` varchar(100) DEFAULT NULL COMMENT 'ID proveniente de Google o Facebook',
   `rol` enum('vecino','moderador','administrador') DEFAULT 'vecino',
@@ -75,11 +106,12 @@ CREATE TABLE `usuarios` (
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`id`, `nombre`, `apellido`, `email`, `password_hash`, `telefono`, `auth_provider`, `provider_id`, `rol`, `estado`, `terminos_aceptados`, `fecha_registro`, `fecha_actualizacion`) VALUES
-(1, 'Kate', 'Bianchi', 'kate@gmail.com', '$2y$10$LfEYoRw8eXwVH/ixRDDnJ.Hw3rDaplUPn0k37QKrjM.HrE5NuJevC', '091491438', 'local', NULL, 'vecino', 'activo', 1, '2026-07-24 15:04:12', '2026-07-24 15:04:12'),
-(2, 'ramiro', 'batista', 'ramiroba.9123@gmail.com', '$2y$10$vJ4PKgbfzxYRCX9nQN26Hufu8vNklqYx73o2gdzD.cuX/Im02giem', '091752831', 'local', NULL, 'vecino', 'activo', 1, '2026-07-24 16:05:04', '2026-07-24 16:05:04'),
-(4, 'Sebastian', 'Espiga', 'ssebastiann@gmail.com', '$2y$10$gz291F15tNkFQ2HSG3Kd2eKz2u6mx7EdbGdn59OYIYHIUNDksfFAS', '', 'local', NULL, 'vecino', 'activo', 1, '2026-07-29 13:20:37', '2026-07-29 13:20:37'),
-(5, 'hola', 'jola', 'ajjaja@gmaill.com', '$2y$10$gWRKxTzQPxcWohEIWj.sAu55b.7C9/k9mYhw3108kBOUQlRXXUypa', '', 'local', NULL, 'vecino', 'activo', 1, '2026-07-29 17:07:44', '2026-07-29 17:07:44');
+INSERT INTO `usuarios` (`id`, `nombre`, `apellido`, `email`, `password_hash`, `telefono`, `direccion`, `biografia`, `avatar`, `idioma`, `auth_provider`, `provider_id`, `rol`, `estado`, `terminos_aceptados`, `fecha_registro`, `fecha_actualizacion`) VALUES
+(1, 'Kate', 'Bianchi', 'kate@gmail.com', '$2y$10$LfEYoRw8eXwVH/ixRDDnJ.Hw3rDaplUPn0k37QKrjM.HrE5NuJevC', '091491438', NULL, NULL, NULL, 'es', 'local', NULL, 'vecino', 'activo', 1, '2026-07-24 15:04:12', '2026-07-24 15:04:12'),
+(2, 'ramiro', 'batista', 'ramiroba.9123@gmail.com', '$2y$10$vJ4PKgbfzxYRCX9nQN26Hufu8vNklqYx73o2gdzD.cuX/Im02giem', '091752831', NULL, NULL, NULL, 'es', 'local', NULL, 'vecino', 'activo', 1, '2026-07-24 16:05:04', '2026-07-24 16:05:04'),
+(4, 'Sebastian', 'Espiga', 'ssebastiann@gmail.com', '$2y$10$gz291F15tNkFQ2HSG3Kd2eKz2u6mx7EdbGdn59OYIYHIUNDksfFAS', '', NULL, NULL, NULL, 'es', 'local', NULL, 'vecino', 'activo', 1, '2026-07-29 13:20:37', '2026-07-29 13:20:37'),
+(5, 'hola', 'jola', 'ajjaja@gmaill.com', '$2y$10$gWRKxTzQPxcWohEIWj.sAu55b.7C9/k9mYhw3108kBOUQlRXXUypa', '', NULL, NULL, NULL, 'es', 'local', NULL, 'vecino', 'activo', 1, '2026-07-29 17:07:44', '2026-07-29 17:07:44'),
+(6, 'Kate', 'Bianchi', 'katebianchii2013@gmail.com', '$2y$10$tHYk3QKIy0dfaVl7lJEIzO6i5ekeAFaVk.G6QCObLV8gbnAiuTRte', '091491438', 'Guichón, Paysandú, Uruguay', 'nase', NULL, 'es', 'local', NULL, 'vecino', 'activo', 1, '2026-08-07 18:26:25', '2026-09-17 22:02:02');
 
 --
 -- Índices para tablas volcadas
@@ -93,6 +125,13 @@ ALTER TABLE `password_resets`
   ADD UNIQUE KEY `token` (`token`),
   ADD KEY `usuario_id` (`usuario_id`),
   ADD KEY `idx_password_resets_token` (`token`);
+
+--
+-- Indices de la tabla `reportes`
+--
+ALTER TABLE `reportes`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `usuario_id` (`usuario_id`);
 
 --
 -- Indices de la tabla `user_tokens`
@@ -122,6 +161,12 @@ ALTER TABLE `password_resets`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de la tabla `reportes`
+--
+ALTER TABLE `reportes`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
 -- AUTO_INCREMENT de la tabla `user_tokens`
 --
 ALTER TABLE `user_tokens`
@@ -131,7 +176,7 @@ ALTER TABLE `user_tokens`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Restricciones para tablas volcadas
@@ -142,6 +187,12 @@ ALTER TABLE `usuarios`
 --
 ALTER TABLE `password_resets`
   ADD CONSTRAINT `password_resets_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE;
+
+--
+-- Filtros para la tabla `reportes`
+--
+ALTER TABLE `reportes`
+  ADD CONSTRAINT `reportes_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `user_tokens`
